@@ -1,4 +1,7 @@
-# coding:utf-8
+# 文档名称：InterGUI
+# 编码格式：utf-8
+# 编写者：罗伟峰
+# 文档作用：软件主程序及与GUI相关的代码操作
 
 from tkinter import *
 from tkinter.ttk import *
@@ -115,13 +118,15 @@ def 初始界面(框架):
             自动复拨.start()
         elif ga.is_alive():
             pass
-        # else:
-        #     自动复拨.是否终止 = True
+        '''# 复拨终止，因有故障，暂时废除
+        else:
+            自动复拨.是否终止 = True
 
-        # 进行主功能：拨号上网
+        进行主功能：拨号上网
+        '''
         拨号上网()
 
-    '''
+    '''# 测试按钮
     def testbutton():
         print("自动复拨.is_alive()", 自动复拨.is_alive())
         print("自动复拨", 自动复拨)
@@ -175,8 +180,8 @@ def 登录设置(框架):
         pass
 
     def 保存登录设置():
+        # 判断代码提交的设置内容是否与设置文档的内容一致，如果不一致则进行内容保存
         if (登陆模式详情.get == '代码提交'):
-            # 判断代码提交的设置内容是否与设置文档的内容一致，如果不一致则进行内容保存
             if 登录网站详情.get() != 设置文档['setting']['web'] or \
                     登陆模式详情.get() != 设置文档['setting']['login'] or \
                     提交方式详情.get() != 设置文档['setting']['submit']:
@@ -198,6 +203,7 @@ def 登录设置(框架):
 
 
 def 学期设置(框架):
+    # 设定文本Label、输入框Entry和按钮Button，使用grid方式进行布局
     开学日期 = Label(框架, text='开学日期')
     开学日期.grid(row=0, column=0, columnspan=2, sticky=W)
     开学日期详情 = Entry(框架)
@@ -206,11 +212,13 @@ def 学期设置(框架):
 
     学期假期 = Label(框架, text='学期假期')
     学期假期.grid(row=1, column=0, columnspan=2, sticky=W)
+    # 点击假期按钮，调用学期假期界面函数，打开学期假期设置界面
     假期按钮 = Button(框架, text='学期假期', command=学期假期界面)
     假期按钮.grid(row=1, column=2, columnspan=4)
 
     学期补课 = Label(框架, text='学期补课')
     学期补课.grid(row=2, column=0, columnspan=2, sticky=W)
+    # 点击补课按钮，调用学期补课界面函数，打开学期补课设置界面
     补课按钮 = Button(框架, text='学期补课', command=学期补课界面)
     补课按钮.grid(row=2, column=2, columnspan=4)
 
@@ -226,7 +234,8 @@ def 学期设置(框架):
             警告信息.grid(row=2, column=0, columnspan=2, sticky=W)
             警告.after(5000, 警告.destroy)
             return
-
+        # 判断设置日期是否超前，超前则发出警告
+        # 该判断可以删除
         if 开学日期详.year > datetime.now().year:
             警告 = Toplevel()
             警告信息 = Label(警告, text='请不要设置未开始的年份',
@@ -234,7 +243,7 @@ def 学期设置(框架):
             警告信息.grid(row=2, column=0, columnspan=2, sticky=W)
             警告.after(5000, 警告.destroy)
             return
-
+        # 判断学期设置的开学日期是否与设置文档的内容一致，如果不一致则进行内容保存
         if 开学日期详 != 设置文档['semester']['begins']:
             新设置文档 = 设置文档
             新设置文档['semester']['begins'] = str(开学日期详)
@@ -245,6 +254,7 @@ def 学期设置(框架):
 
 
 def 其他设置(框架):
+    # 设定文本Label、输入框Entry和按钮Button，使用grid方式进行布局
     复拨时间段 = Label(框架, text='复拨时间段')
     复拨时间段.grid(row=0, column=0, columnspan=2, sticky=W)
     复拨时间段详情s = Entry(框架)
@@ -256,13 +266,15 @@ def 其他设置(框架):
 
     测试网站 = Label(框架, text='拨号测试网站')
     测试网站.grid(row=1, column=0, columnspan=2, sticky=W)
-    测试网站详情 = Button(框架, text='拨号测试网站', command=测试网站界面)
-    测试网站详情.grid(row=1, column=2, columnspan=2)
+    # 点击测试网站按钮，调用测试网站界面函数，打开测试网站设置界面
+    测试网站按钮 = Button(框架, text='拨号测试网站', command=测试网站界面)
+    测试网站按钮.grid(row=1, column=2, columnspan=2)
 
     校站设置 = Label(框架, text='校站设置')
     校站设置.grid(row=2, column=0, columnspan=2, sticky=W)
-    校站设置详情 = Button(框架, text='校站设置', command=校站设置界面)
-    校站设置详情.grid(row=2, column=2, columnspan=2)
+    # 点击校站设置按钮，调用校站设置界面函数，打开测试校站设置界面
+    校站设置按钮 = Button(框架, text='校站设置', command=校站设置界面)
+    校站设置按钮.grid(row=2, column=2, columnspan=2)
 
     字体大小 = Label(框架, text='字体大小')
     字体大小.grid(row=3, column=0, columnspan=2, sticky=W)
@@ -272,6 +284,7 @@ def 其他设置(框架):
     字体大小详情.grid(row=3, column=2, columnspan=2)
 
     def 保存其他设置():
+        # 判断其他设置的复拨时间段和字体大小是否与设置文档的内容一致，如果不一致则进行内容保存
         if 复拨时间段详情s.get() != 设置文档['else']['redialtime'][0] or \
                 复拨时间段详情e.get() != 设置文档['else']['redialtime'][1] or \
                 字体大小详情.get() != 设置文档['else']['fontsize']:
@@ -280,14 +293,22 @@ def 其他设置(框架):
             新设置文档['else']['redialtime'][1] = 复拨时间段详情e.get()
             新设置文档['else']['fontsize'] = 字体大小详情.get()
             UD.保存设置数据(新设置文档)
+        '''# 有个未处理的问题
+        # 修改字体大小后点击保存，字体大小并不会发生改变，需要软件重启后才会变化
+        # 问题在于保存设置数据后，软件并没有重新读取字体大小来刷新界面
+        # 该未处理问题等后续空闲时候在进行修复处理
+        '''
 
     保存按钮 = Button(框架, text='保存', command=保存其他设置)
     保存按钮.grid(row=4, column=0, columnspan=4)
 
 
 def 关于软件(框架):
+    # 使框架占满该页面的所有部分，比重为1（占满）
     框架.columnconfigure(0, weight=1)
+    # 设定样式类型'this.TLabel'。使其不受总样式修改
     Style().configure('this.TLabel', font=("微软雅黑", 16))
+    # 设定文本Label，使用grid方式进行布局
     软件介绍text = "软件介绍:\n\
         整体软件功能趋于完整，可直接使用\n\
         目前登录方式仅有代码提交-get模式\n\
@@ -310,13 +331,18 @@ def 关于软件(框架):
 
 
 def 测试网站界面():
+    # 新建一个子窗口，并设定大小为400X300，并使第0列占比为2（占满）
     子界面 = Toplevel()
     子界面.geometry("400x300")
     子界面.columnconfigure(0, weight=2)
 
     def 新增行数():
+        # 函数作用：用于新增填写测试网站的输入框数量
+        # 调用DataLibrary的读取行数函数，并传入需要读取的窗口，返回已有行数
         已有行数 = DL.读取行数(子界面)
-        if 已有行数 == 11:
+        # 当已有行数大于10的时候，弹出警告。
+        # 已有行数没有大于的时候，新增输入框
+        if 已有行数 > 10:
             new子界面 = Toplevel()
             说明 = Label(new子界面, text="最多新增10个测试网址")
             说明.grid(row=0, column=0, columnspan=1, sticky=S)
@@ -327,6 +353,8 @@ def 测试网站界面():
             测试网站详情.grid(row=已有行数, column=0, columnspan=2, sticky="NSEW")
 
     def 保存测试网址():
+        # 函数作用：用于保存测试网站的输入框的值
+        # 使用一个数组来存放输入框的值，然后遍历窗口的每一个组件，判断该组件是否为输入框且输入框的值不为空
         内容 = []
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
@@ -334,14 +362,14 @@ def 测试网站界面():
         新设置文档 = 设置文档
         新设置文档['else']['testweb'] = 内容
         UD.保存设置数据(新设置文档)
-
+    # 设定按钮Button，使用grid方式进行布局
     新增按钮 = Button(子界面, text='新增', command=新增行数)
     新增按钮.grid(row=0, column=0, columnspan=1)
     保存按钮 = Button(子界面, text='保存', command=保存测试网址)
     保存按钮.grid(row=0, column=1, columnspan=1)
 
     测试网站数量 = len(设置文档['else']['testweb'])
-
+    # 此处for循环作用是在窗口创造时，根据从设置文档中读取测试网站内容，创建对应的输入框，并将值填入输入框中
     for i in range(测试网站数量):
         测试网站详情 = Entry(子界面)
         测试网站详情.insert(0, 设置文档['else']['testweb'][i])
@@ -349,13 +377,17 @@ def 测试网站界面():
 
 
 def 提交代码设置界面():
+    # 新建一个子窗口，并设定大小为400X600，并使第0列占比为1、第1列占比为2（1列更宽）
     子界面 = Toplevel()
     子界面.geometry("400x600")
     子界面.columnconfigure(0, weight=1)
     子界面.columnconfigure(1, weight=2)
 
     def 新增行数():
+        # 函数作用：用于新增填写提交代码的key和value的输入框数量。单次点击新增2个输入框
+        # 调用DataLibrary的读取行数函数，并传入需要读取的窗口，返回已有行数
         已有行数 = DL.读取行数(子界面)
+        # 当已有行数大于12的时候，弹出提示窗口，但仍然可以继续新增输入框
         if 已有行数 > 12:
             new子界面 = Toplevel()
             说明 = Label(new子界面, text="建议少于10个")
@@ -368,17 +400,23 @@ def 提交代码设置界面():
         代码value详情.grid(row=已有行数, column=1, columnspan=1, sticky="NSEW")
 
     def 保存提交代码():
+        # 函数作用：用于保存提交代码设置界面的所有输入框的值
+        # 使用一个数组来存放输入框的值，然后遍历窗口的每一个组件，判断该组件是否为输入框且输入框的值不为空
         内容 = []
         新设置文档 = 设置文档
+        # 读取多行输入框Text的值，并判断是否跟设置文档的值不一样
+        # Text.get的"0.0"指的是从第0行第0个字符开始读取，"end"指读取到末尾，[:-1]作用是删除最后一个换行符
         if (headers详情.get("0.0", "end")[:-1] != 设置文档['GetValue']['headers'].get("User-Agent")):
             新设置文档['GetValue']['headers']['User-Agent'] = headers详情.get(
                 "0.0", "end")[:-1]
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
                 内容.append(i.get())
+        # 将内容按key和value以字典的形式存储起来
+        # 内容的偶数为key，奇数为value
         新设置文档['GetValue']['paramsed'] = dict(zip(内容[0::2], 内容[1::2]))
         UD.保存设置数据(新设置文档)
-
+    # 设定按钮Button、文本Label和多行输入框Text，使用grid方式进行布局
     新增按钮 = Button(子界面, text='新增', command=新增行数)
     新增按钮.grid(row=0, column=0, columnspan=1)
     保存按钮 = Button(子界面, text='保存', command=保存提交代码)
@@ -396,6 +434,7 @@ def 提交代码设置界面():
     代码value文字 = Label(子界面, text="代码value")
     代码value文字.grid(row=3, column=1, columnspan=1, sticky=S)
 
+    # 此处for循环作用是在窗口创造时，根据从设置文档中读取key和value，创建对应的输入框，并将值填入输入框中
     for key, value in 设置文档['GetValue']['paramsed'].items():
         已有行数 = DL.读取行数(子界面)
         代码key详情 = Entry(子界面)
@@ -407,6 +446,7 @@ def 提交代码设置界面():
 
 
 def 学期假期界面():
+    # 新建一个子窗口，并设定大小为400X600，并使所有列占比为1（界面宽度平均分配）
     子界面 = Toplevel()
     子界面.geometry("400x600")
     子界面.columnconfigure(0, weight=1)
@@ -430,23 +470,35 @@ def 学期假期界面():
     固定复拨文字 = Label(子界面, text="固定复拨日期")
     固定复拨文字.grid(row=0, column=0, columnspan=4, sticky=S)
 
+    # 设置一个字典，用于存放7个单选项，是为了后面进行读取查找对象
     星期 = ["星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"]
     星期_dict = dict()
     for i in range(len(星期)):
         星期_dict[星期[i]] = 设置文档['semester']['weekend'][i]
+    # 结果：星期_dict = {"星期一": 0, "星期二": 0, "星期三": 0,"星期四": 0, "星期五": 0, "星期六": 1, "星期日": 1}
 
+    # 设置一个列表，用于存放7个IntVar值，等同于以下内容
+    # var_星期一 = IntVar(value=设置文档['semester']['weekend'][0])
+    # ...
+    # var_星期日 = IntVar(value=设置文档['semester']['weekend'][6])
+    # Checkbutton的值自认Tk自带的特定函数的值，所以得设IntVar
     var_星期 = []
     for i in range(len(星期_dict)):
         var_星期.append(IntVar(value=设置文档['semester']['weekend'][i]))
 
+    # 默认为第2行第1列
     var_column = 0
     var_row = 1
     for key in 星期_dict.keys():
+        # 如果该行已经添加的数量大于4个，就换行
         if var_column > 3:
             var_column = 0
             var_row = 2
-        Checkbutton(子界面, text=key, variable=var_星期[list(
-            星期_dict.keys()).index(key)]).grid(row=var_row, column=var_column, sticky=W)
+        # Checkbutton的variable，根据key返回对应var_星期的值
+        # 即key为“星期一”，则返回var_星期一的值
+        Checkbutton(子界面, text=key,
+                    variable=var_星期[list(星期_dict.keys()).index(key)]
+                    ).grid(row=var_row, column=var_column, sticky=W)
         var_column = var_column + 1
 
     def 保存():
@@ -460,6 +512,8 @@ def 学期假期界面():
         内容 = []
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
+                # 利用datetime.data.fromisoformat来确定是否有该日期，但是该函数对格式要求严格
+                # 所以需要try来进行错误判断，格式不对或日期错误则报异常
                 try:
                     补课日期详 = datetime.date.fromisoformat(i.get())
                 except ValueError:
@@ -520,6 +574,8 @@ def 学期补课界面():
         内容 = []
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
+                # 利用datetime.data.fromisoformat来确定是否有该日期，但是该函数对格式要求严格
+                # 所以需要try来进行错误判断，格式不对或日期错误则报异常
                 try:
                     补课日期详 = datetime.date.fromisoformat(i.get())
                 except ValueError:
@@ -564,10 +620,11 @@ def 校站设置界面():
     子界面.columnconfigure(0, weight=1)
     子界面.columnconfigure(1, weight=2)
 
+    '''# 想要在右侧设置一个滚动条，但是失败了
     # 滚动条 = Scrollbar(子界面)
     # 滚动条.grid(row=0, column=3, columnspan=1)  # place(anchor=E, relheight=1)
     # 滚动条.config(command=子界面.yview)
-
+    '''
     def 新增行数():
         已有行数 = DL.读取行数(子界面)
         print(已有行数)
@@ -667,27 +724,31 @@ class 拨号上网界面更新(threading.Thread):
         threading.Thread(target=self.界面更新, daemon=True).start()
 
     def 界面更新(self):
-        self.测试结果 = DL.联网测试线程()
-        if not self.StopTag:
-            if self.测试结果[0] == 0:
-                测试1.destroy()
-                测试2 = Label(拨号上网子界面, text="无法连通登录网站")
-                测试2.grid(row=1, column=0, columnspan=1, sticky=S)
-            elif self.测试结果[1] == 0:
-                测试1.destroy()
-                测试2 = Label(拨号上网子界面, text="无法连接外网")
-                测试2.grid(row=1, column=0, columnspan=1, sticky=S)
-            elif self.测试结果[1] != self.测试结果[2]:
-                测试1.destroy()
-                测试2 = Label(拨号上网子界面, text="部分测试网址无法连通")
-                测试2.grid(row=1, column=0, columnspan=1, sticky=S)
+        self.测试结果 = DL.联网测试()
+        print(self.StopTag)
+        try:
+            if not self.StopTag:
+                if self.测试结果[0] == 0:
+                    测试1.destroy()
+                    测试2 = Label(拨号上网子界面, text="无法连通登录网站")
+                    测试2.grid(row=1, column=0, columnspan=1, sticky=S)
+                elif self.测试结果[1] == 0:
+                    测试1.destroy()
+                    测试2 = Label(拨号上网子界面, text="无法连接外网")
+                    测试2.grid(row=1, column=0, columnspan=1, sticky=S)
+                elif self.测试结果[1] != self.测试结果[2]:
+                    测试1.destroy()
+                    测试2 = Label(拨号上网子界面, text="部分测试网址无法连通")
+                    测试2.grid(row=1, column=0, columnspan=1, sticky=S)
+                else:
+                    测试1.destroy()
+                    测试3 = Label(拨号上网子界面, text="已连通")
+                    测试3.grid(row=1, column=0, columnspan=1, sticky=S)
+                拨号上网子界面.after(10000, 拨号上网子界面.destroy)
             else:
-                测试1.destroy()
-                测试3 = Label(拨号上网子界面, text="已连通")
-                测试3.grid(row=1, column=0, columnspan=1, sticky=S)
-            拨号上网子界面.after(10000, 拨号上网子界面.destroy)
-        else:
-            self._stop()
+                self._stop()
+        except Exception:
+            pass
 
 
 def 询问退出():
@@ -728,13 +789,15 @@ def 弹出窗口(提示):
 
 
 def 类拨号启动():
-    终止文件 = open(通用文档路径, "w+")
-    终止文件.write("0")
-    终止文件.close()
+    UD.初始化跨线程变量(1)
+    # 终止文件 = open(跨线程变量文档路径, "w+")
+    # 终止文件.write("0")
+    # 终止文件.close()
     ga.start()
 
 
 def get_resource_path(relative_path):
+    # 函数作用：获取运行时软件解压的临时文件夹
     if hasattr(sys, '_MEIPASS'):
         return os.path.join(sys._MEIPASS, relative_path)
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), relative_path)
@@ -744,7 +807,7 @@ def get_resource_path(relative_path):
 主文件路径 = os.path.dirname(os.path.realpath(sys.argv[0]))
 用户文档路径 = os.path.join(主文件路径, 'UserSettings.json')
 设置文档路径 = os.path.join(主文件路径, 'DataSettings.json')
-通用文档路径 = os.path.join(主文件路径, 'test.txt')
+跨线程变量文档路径 = os.path.join(主文件路径, 'test.txt')
 
 if __name__ == '__main__':
     # 进入程序，判断是否位于桌面或磁盘根目录
@@ -768,6 +831,7 @@ if __name__ == '__main__':
     # 判断是否有用户文档跟设置文档
     UD.初始化用户数据(0)
     UD.初始化设置数据(0)
+    UD.初始化跨线程变量(0)
     # 读取用户文档和设置文档
     用户文档 = UD.读取用户数据()
     设置文档 = UD.读取设置数据()

@@ -8,6 +8,7 @@ import json
 
 
 def 初始化用户数据(Reset):
+    # 函数作用：检查软件路径是否有用户文档或是否强制重置用户文档
     if ((os.path.exists(GUI.用户文档路径) is False) or Reset == 1):
         f = open(GUI.用户文档路径, "w", encoding='utf-8')
         f.write(初始化用户数据文档())
@@ -15,13 +16,23 @@ def 初始化用户数据(Reset):
 
 
 def 初始化设置数据(Reset):
+    # 函数作用：检查软件路径是否有设置文档或是否强制重置设置文档
     if ((os.path.exists(GUI.设置文档路径) is False) or Reset == 1):
         f = open(GUI.设置文档路径, "w", encoding='utf-8')
         f.write(初始化设置数据文档())
         f.close()
 
 
+def 初始化跨线程变量(Reset):
+    # 函数作用：检查软件路径是否有设置文档或是否强制重置跨线程变量文档
+    if ((os.path.exists(GUI.跨线程变量文档路径) is False) or Reset == 1):
+        f = open(GUI.跨线程变量文档路径, "w", encoding='utf-8')
+        f.write(初始化跨线程变量文档())
+        f.close()
+
+
 def 读取数据细(路径, 父元素, 子元素):
+    # 函数作用：直接读取数据，而尽量不将数据存储到变量中
     文档 = open(路径, 'r', encoding='utf-8')
     用户文档 = json.loads(文档.read())
     文档.close()
@@ -32,6 +43,7 @@ def 读取数据细(路径, 父元素, 子元素):
 
 
 def 读取用户数据():
+    # 函数作用：读取并返回用户文档
     文档 = open(GUI.用户文档路径, 'r', encoding='utf-8')
     用户文档 = json.loads(文档.read())
     文档.close()
@@ -39,6 +51,7 @@ def 读取用户数据():
 
 
 def 读取设置数据():
+    # 函数作用：读取并返回设置文档
     文档 = open(GUI.设置文档路径, 'r', encoding='utf-8')
     设置文档 = json.loads(文档.read())
     文档.close()
@@ -46,6 +59,7 @@ def 读取设置数据():
 
 
 def 保存用户数据(新用户文档):
+    # 函数作用：保存新的用户文档
     新用户文档 = json.dumps(新用户文档, ensure_ascii=False)
     文档 = open(GUI.用户文档路径, 'w', encoding='utf-8')
     文档.write(新用户文档)
@@ -59,17 +73,15 @@ def 保存用户数据(新用户文档):
 
 
 def 保存设置数据(新设置文档):
-    # print(新设置文档)
+    # 函数作用：保存新的设置文档
     新设置文档 = json.dumps(新设置文档, ensure_ascii=False)
-    # print("1")
     文档 = open(GUI.设置文档路径, 'w', encoding='utf-8')
-    # print("2")
     文档.write(新设置文档)
-    # print("3")
     文档.close()
 
 
 def 自启动脚本路径():
+    # 函数作用：返回用户启动文件夹的自启动脚本路径
     用户路径 = os.environ['UserProfile']
     启动路径 = os.path.join(
         用户路径, 'AppData\\Roaming\\Microsoft\\Windows\\Start Menu\\Programs\\Startup')
@@ -79,6 +91,7 @@ def 自启动脚本路径():
 
 
 def 设置自启动(file):
+    # 函数作用：根据自启动脚本路径，创建一个自启动脚本，使其能够在开机时执自行启动所指向的程序
     脚本路径 = 自启动脚本路径()
     f = open(脚本路径, "w")
     内容 = "start " + file
@@ -87,6 +100,7 @@ def 设置自启动(file):
 
 
 def 关闭自启动():
+    # 函数作用：根据自启动脚本路径，判断是否有自启动脚本，如有就删除自启动脚本
     脚本路径 = 自启动脚本路径()
     # print(filetest)
     if (os.path.exists(脚本路径)):
@@ -97,23 +111,17 @@ def 关闭自启动():
 
 
 def 拨号上网值():
+    # 函数作用：拨号上网
+
     # 获取get的传输值，并将json的用户密码修改为用户文档里的账户密码
-    paramsed = 读取数据细(GUI.设置文档路径, 'GetValue', 'paramsed')
-    paramsed_key = list(paramsed.keys())
-    paramsed_value = list(paramsed.values())
-    paramsed[paramsed_key[paramsed_value.index("UD_name")]] = 读取数据细(
-        GUI.用户文档路径, 'data', 'name')
-    paramsed[paramsed_key[paramsed_value.index("UD_password")]] = 读取数据细(
+    参数 = 读取数据细(GUI.设置文档路径, 'GetValue', 'paramsed')
+    参数_key = list(参数.keys())
+    参数_value = list(参数.values())
+    参数[参数_key[参数_value.index("UD_name")]] = 读取数据细(GUI.用户文档路径, 'data', 'name')
+    参数[参数_key[参数_value.index("UD_password")]] = 读取数据细(
         GUI.用户文档路径, 'data', 'password')
 
-    # print(paramsed)
-    # print(读取数据细(GUI.设置文档路径, 'GetValue', 'headers'))
-
-    # requests.get(url=读取数据细(GUI.设置文档路径, 'setting', 'web'), headers=读取数据细(
-    #    GUI.设置文档路径, 'GetValue', 'headers'), params=paramsed)
-    # r = requests.get(url=读取数据细(GUI.设置文档路径, 'setting', 'web'), params=paramsed)
-    requests.get(url=读取数据细(GUI.设置文档路径, 'setting', 'web'), params=paramsed)
-    # print(r.url)
+    requests.get(url=读取数据细(GUI.设置文档路径, 'setting', 'web'), params=参数)
 
 
 def 初始化用户数据文档():
@@ -188,6 +196,15 @@ def 初始化设置数据文档():
         }
     }
     return json.dumps(文档, ensure_ascii=False)
+
+
+def 初始化跨线程变量文档():
+    文档 = "0"
+    return 文档
+    # 文档 = {
+    #     "data": 0
+    # }
+    # return json.dumps(文档, ensure_ascii=False)
 
 
 if __name__ == '__main__':
