@@ -116,8 +116,8 @@ def 初始界面(框架):
         # 如果没有勾选，则终止自动复拨
         if var_复拨.get() == 1 and ga.is_alive() is False:
             自动复拨.start()
-        elif ga.is_alive():
-            pass
+        # elif ga.is_alive():
+        #     pass
         '''# 复拨终止，因有故障，暂时废除
         else:
             自动复拨.是否终止 = True
@@ -226,7 +226,7 @@ def 学期设置(框架):
 
         # 设置错误捕获，错误来源于用户填写的信息不符合格式化的要求
         try:
-            开学日期详 = datetime.date.fromisoformat(开学日期详情.get())
+            开学日期详 = datetime.fromisoformat(开学日期详情.get())
         except ValueError:
             警告 = Toplevel()
             警告信息 = Label(警告, text='请确保日期格式为YYYY-MM-DD\n并且该日期确实存在',
@@ -315,26 +315,33 @@ def 关于软件(框架):
         后续会完善post登录和模拟登录方式\n\
         至于验证码的问题，需要再往后完善"
     软件介绍 = Label(框架, text=软件介绍text, style='this.TLabel')
-    软件介绍.grid(row=0, column=0, columnspan=2, sticky=W)
+    软件介绍.grid(row=0, column=0, columnspan=3, sticky=W)
 
     版本号text = "版本号：2.0\n"
     版本号 = Label(框架, text=版本号text, style='this.TLabel')
-    版本号.grid(row=1, column=0, columnspan=1, sticky=W)
+    版本号.grid(row=1, column=0, columnspan=1, sticky=SW)
+
+    def 打开网页():
+        webbrowser.open("https://github.com/SDB-dier/AutoLoginInternet")
+
+    新增按钮 = Button(框架, text="获取最新版", command=打开网页)
+    新增按钮.grid(row=1, column=1, columnspan=1, sticky=N)
 
     封包时间text = "封包时间：2023/11/23\n"
     封包时间 = Label(框架, text=封包时间text, style='this.TLabel')
-    封包时间.grid(row=1, column=1, columnspan=1, sticky=E)
+    封包时间.grid(row=1, column=2, columnspan=1, sticky=SE)
 
     关于我text = "制作人：罗伟峰\n班级：22网工C1"
     关于我 = Label(框架, text=关于我text, style='this.TLabel')
-    关于我.grid(row=2, column=0, columnspan=2, sticky=NE)
+    关于我.grid(row=2, column=0, columnspan=3, sticky=NE)
 
 
 def 测试网站界面():
-    # 新建一个子窗口，并设定大小为400X300，并使第0列占比为2（占满）
+    # 新建一个子窗口，并设定大小为400X600，并使所有列占比为1（界面宽度平均分配）
     子界面 = Toplevel()
     子界面.geometry("400x300")
-    子界面.columnconfigure(0, weight=2)
+    子界面.columnconfigure(0, weight=1)
+    子界面.columnconfigure(1, weight=1)
 
     def 新增行数():
         # 函数作用：用于新增填写测试网站的输入框数量
@@ -422,7 +429,7 @@ def 提交代码设置界面():
     保存按钮 = Button(子界面, text='保存', command=保存提交代码)
     保存按钮.grid(row=0, column=1, columnspan=1)
 
-    headers文字 = Label(子界面, text="代码key")
+    headers文字 = Label(子界面, text="请求头headers")
     headers文字.grid(row=1, column=0, columnspan=2, sticky=S)
     headers详情 = Text(子界面)
     headers详情.config(height=5)
@@ -515,7 +522,7 @@ def 学期假期界面():
                 # 利用datetime.data.fromisoformat来确定是否有该日期，但是该函数对格式要求严格
                 # 所以需要try来进行错误判断，格式不对或日期错误则报异常
                 try:
-                    补课日期详 = datetime.date.fromisoformat(i.get())
+                    补课日期详 = datetime.fromisoformat(i.get())
                 except ValueError:
                     警告 = Toplevel()
                     警告信息 = Label(
@@ -577,7 +584,7 @@ def 学期补课界面():
                 # 利用datetime.data.fromisoformat来确定是否有该日期，但是该函数对格式要求严格
                 # 所以需要try来进行错误判断，格式不对或日期错误则报异常
                 try:
-                    补课日期详 = datetime.date.fromisoformat(i.get())
+                    补课日期详 = datetime.fromisoformat(i.get())
                 except ValueError:
                     警告 = Toplevel()
                     警告信息 = Label(
@@ -745,8 +752,6 @@ class 拨号上网界面更新(threading.Thread):
                     测试3 = Label(拨号上网子界面, text="已连通")
                     测试3.grid(row=1, column=0, columnspan=1, sticky=S)
                 拨号上网子界面.after(10000, 拨号上网子界面.destroy)
-            else:
-                self._stop()
         except Exception:
             pass
 
@@ -863,10 +868,10 @@ if __name__ == '__main__':
         UD.关闭自启动()
     # 判断是否勾选了自动复拨功能，如果勾选则启用自动复拨
 
-    global 自动复拨, ga
+    global ga, 自动复拨
     # 自动复拨 = multiprocessing.Process(target=类拨号启动)
-    自动复拨 = threading.Thread(target=类拨号启动, daemon=True)
     ga = DL.自动复拨()
+    自动复拨 = threading.Thread(target=类拨号启动, daemon=True)
     # 自动复拨.start()
     print("自动复拨.is_alive()", 自动复拨.is_alive())
     # 自动复拨 = DL.自动复拨()

@@ -161,8 +161,8 @@ class 自动复拨(threading.Thread):
             # 暂停1秒的作用是使判断拨号函数先修改 是否拨号 变量
             自动拨号线程 = threading.Thread(target=self.自动拨号, daemon=True)
             自动拨号线程.start()
-            判断拨号线程.join()
-            自动拨号线程.join()
+            # 判断拨号线程.join()
+            # 自动拨号线程.join()
 
     def 判断拨号(self):
         # 函数作用：判断当前时间是否需要拨号，如果不需要则使 是否拨号 变量为否，使其终止自动复拨
@@ -207,9 +207,8 @@ class 自动复拨(threading.Thread):
                         测试网站 = requests.get(挑选测试网站)
                         if 测试网站.status_code == 200:
                             print("测试网站.time.sleep", datetime.now())
+                            self.联网失败次数 = 0
                             time.sleep(180)
-                            if self.联网失败次数 != 0:
-                                self.联网失败次数 = 0
                     except Exception as e:
                         print("测试网站:", 挑选测试网站, "测试问题:", e)
                         self.联网失败次数 = self.联网失败次数 + 1
