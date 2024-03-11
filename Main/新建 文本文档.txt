@@ -1,0 +1,2 @@
+pyinstaller InterGUI.py -F -i kuku\kuku.ico -n 自动化登录程序 -p UserData.py -p DataLibrary.py --add-data="kuku:kuku"
+pyinstaller InterGUI.py -F -w -i kuku\kuku.ico -n 自动化登录程序 -p UserData.py -p DataLibrary.py --add-data="kuku:kuku"

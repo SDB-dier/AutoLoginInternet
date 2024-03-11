@@ -53,6 +53,7 @@ def 初始界面(框架):
     密码详情.grid(row=2, column=1, columnspan=1, sticky=E)
 
     def 显示切换():
+        print(datetime.now(), "GUI初始界面", "点击显示切换")
         if (密码详情['show'] == "*"):
             密码详情['show'] = ""
         else:
@@ -81,6 +82,7 @@ def 初始界面(框架):
     链接按钮.grid(row=5, column=0, columnspan=1)
 
     def 保存并拨号():
+        print(datetime.now(), "GUI初始界面", "点击保存并拨号")
         # 首先获取用户文档和设置文档并保存在一个新变量上，好用于后续判断和覆盖
         新用户文档 = 用户文档
         新设置文档 = 设置文档
@@ -88,6 +90,7 @@ def 初始界面(框架):
         # 如果不一致则将输入框的用户名和密码保存到新用户文档中，再对源文档进行覆盖
         if 用户名详情.get() != 用户文档['data']['name'] or \
                 密码详情.get() != 用户文档['data']['pwmd5']:
+            print(datetime.now(), "GUI初始界面", "用户名或密码不一致")
             新用户文档['data']['name'] = 用户名详情.get()
             新用户文档['data']['password'] = 密码详情.get()
             新用户文档['data']['pwmd5'] = DL.md5_text(密码详情.get())
@@ -99,6 +102,7 @@ def 初始界面(框架):
         if var_自启动.get() != 设置文档['button']['turnon'] or \
                 var_自拨.get() != 设置文档['button']['autodial'] or \
                 var_复拨.get() != 设置文档['button']['redial']:
+            print(datetime.now(), "GUI初始界面", "自启动或自动拨号或自动复拨不一致")
             新设置文档['button']['turnon'] = var_自启动.get()
             新设置文档['button']['autodial'] = var_自拨.get()
             新设置文档['button']['redial'] = var_复拨.get()
@@ -107,15 +111,22 @@ def 初始界面(框架):
         # 如果勾选自启动，则立即执行设置自启动功能
         # 使其在启动文档保存一个开启该软件的bat批命令
         # 如果没有勾选，则删除启动文档的bat批命令
+        print(datetime.now(), "GUI初始界面", "判断是否需要自启动")
         if var_自启动.get() == 1:
             UD.设置自启动(sys.argv[0])
+            print(datetime.now(), "GUI初始界面", "启动自启动")
         else:
             UD.关闭自启动()
+            print(datetime.now(), "GUI初始界面", "关闭自启动")
+
         # 如果勾选自动复拨，则启动自动复拨功能
         # 使软件根据用户的设定，是否需要进行自动复拨
         # 如果没有勾选，则终止自动复拨
+        print(datetime.now(), "GUI初始界面", "自动复拨", var_复拨.get())
+        print(datetime.now(), "GUI初始界面", "ga.is_alive()", ga.is_alive())
         if var_复拨.get() == 1 and ga.is_alive() is False:
             自动复拨.start()
+            print(datetime.now(), "GUI初始界面", "启动自动复拨")
         # elif ga.is_alive():
         #     pass
         '''# 复拨终止，因有故障，暂时废除
@@ -143,6 +154,7 @@ def 初始界面(框架):
     # 打开界面立即判断设置文档的自动拨号是否启动
     # 如果启动则直接拨号，无需用户手动点击拨号
     if (设置文档['button']['autodial'] == 1):
+        print(datetime.now(), "GUI", "自动拨号")
         拨号上网()
 
 
@@ -161,25 +173,31 @@ def 登录设置(框架):
     登陆模式详情.current(list(登陆模式详情['value']).index(设置文档['setting']['login']))
     登陆模式详情.grid(row=1, column=2, columnspan=2)
 
-    # 如果登录方式选择代码提交，则显示代码提交的编辑内容
-    if (登陆模式详情.get() == '代码提交'):
-        提交方式 = Label(框架, text='提交方式')
-        提交方式.grid(row=2, column=0, columnspan=2, sticky=W)
-        提交方式详情 = Combobox(框架, state="readonly")
-        提交方式详情['value'] = ('get', 'post')
-        提交方式详情.current(list(提交方式详情['value']).index(设置文档['setting']['submit']))
-        提交方式详情.grid(row=2, column=2, columnspan=2)
+    global 提交方式详情
 
-        提交代码 = Label(框架, text='提交代码')
-        提交代码.grid(row=3, column=0, columnspan=2, sticky=W)
-        提交代码详情 = Button(框架, text='编辑提交代码', command=提交代码设置界面)
-        提交代码详情.grid(row=3, column=2, columnspan=2)
-    else:
-        # 如果登录方式选择模拟操作，则显示模拟操作的编辑内容
-        # 模拟操作还未编写
-        pass
+    def 显示():
+        # 如果登录方式选择代码提交，则显示代码提交的编辑内容
+        if (登陆模式详情.get() == '代码提交'):
+            提交方式 = Label(框架, text='提交方式')
+            提交方式.grid(row=2, column=0, columnspan=2, sticky=W)
+            提交方式详情 = Combobox(框架, state="readonly")
+            提交方式详情['value'] = ('get', 'post')
+            提交方式详情.current(list(提交方式详情['value']).index(
+                设置文档['setting']['submit']))
+            提交方式详情.grid(row=2, column=2, columnspan=2)
+
+            提交代码 = Label(框架, text='提交代码')
+            提交代码.grid(row=3, column=0, columnspan=2, sticky=W)
+            提交代码详情 = Button(框架, text='编辑提交代码', command=提交代码设置界面)
+            提交代码详情.grid(row=3, column=2, columnspan=2)
+        else:
+            # 如果登录方式选择模拟操作，则显示模拟操作的编辑内容
+            # 模拟操作还未编写
+            pass
+    显示()
 
     def 保存登录设置():
+        print(datetime.now(), "GUI登录设置", "点击保存登录设置")
         # 判断代码提交的设置内容是否与设置文档的内容一致，如果不一致则进行内容保存
         if (登陆模式详情.get == '代码提交'):
             if 登录网站详情.get() != 设置文档['setting']['web'] or \
@@ -197,12 +215,14 @@ def 登录设置(框架):
                 新设置文档['setting']['web'] = 登录网站详情.get()
                 新设置文档['setting']['login'] = 登陆模式详情.get()
                 UD.保存设置数据(新设置文档)
+        # 框架.after(1000, 显示())
 
     保存按钮 = Button(框架, text='保存', command=保存登录设置)
     保存按钮.grid(row=4, column=0, columnspan=4)
 
 
 def 学期设置(框架):
+    print(datetime.now(), "GUI学期设置")
     # 设定文本Label、输入框Entry和按钮Button，使用grid方式进行布局
     开学日期 = Label(框架, text='开学日期')
     开学日期.grid(row=0, column=0, columnspan=2, sticky=W)
@@ -223,7 +243,7 @@ def 学期设置(框架):
     补课按钮.grid(row=2, column=2, columnspan=4)
 
     def 保存学期设置():
-
+        print(datetime.now(), "GUI学期设置", "点击保存学期设置")
         # 设置错误捕获，错误来源于用户填写的信息不符合格式化的要求
         try:
             开学日期详 = datetime.fromisoformat(开学日期详情.get())
@@ -254,6 +274,7 @@ def 学期设置(框架):
 
 
 def 其他设置(框架):
+    print(datetime.now(), "GUI其他设置")
     # 设定文本Label、输入框Entry和按钮Button，使用grid方式进行布局
     复拨时间段 = Label(框架, text='复拨时间段')
     复拨时间段.grid(row=0, column=0, columnspan=2, sticky=W)
@@ -284,6 +305,7 @@ def 其他设置(框架):
     字体大小详情.grid(row=3, column=2, columnspan=2)
 
     def 保存其他设置():
+        print(datetime.now(), "GUI其他设置", "点击保存其他设置")
         # 判断其他设置的复拨时间段和字体大小是否与设置文档的内容一致，如果不一致则进行内容保存
         if 复拨时间段详情s.get() != 设置文档['else']['redialtime'][0] or \
                 复拨时间段详情e.get() != 设置文档['else']['redialtime'][1] or \
@@ -304,6 +326,7 @@ def 其他设置(框架):
 
 
 def 关于软件(框架):
+    print(datetime.now(), "GUI关于软件")
     # 使框架占满该页面的所有部分，比重为1（占满）
     框架.columnconfigure(0, weight=1)
     # 设定样式类型'this.TLabel'。使其不受总样式修改
@@ -322,6 +345,7 @@ def 关于软件(框架):
     版本号.grid(row=1, column=0, columnspan=1, sticky=SW)
 
     def 打开网页():
+        print(datetime.now(), "GUI关于软件", "点击获取最新版")
         webbrowser.open("https://github.com/SDB-dier/AutoLoginInternet")
 
     新增按钮 = Button(框架, text="获取最新版", command=打开网页)
@@ -337,6 +361,7 @@ def 关于软件(框架):
 
 
 def 测试网站界面():
+    print(datetime.now(), "GUI测试网站界面")
     # 新建一个子窗口，并设定大小为400X600，并使所有列占比为1（界面宽度平均分配）
     子界面 = Toplevel()
     子界面.geometry("400x300")
@@ -344,6 +369,7 @@ def 测试网站界面():
     子界面.columnconfigure(1, weight=1)
 
     def 新增行数():
+        print(datetime.now(), "GUI测试网站界面", "点击新增行数")
         # 函数作用：用于新增填写测试网站的输入框数量
         # 调用DataLibrary的读取行数函数，并传入需要读取的窗口，返回已有行数
         已有行数 = DL.读取行数(子界面)
@@ -360,6 +386,7 @@ def 测试网站界面():
             测试网站详情.grid(row=已有行数, column=0, columnspan=2, sticky="NSEW")
 
     def 保存测试网址():
+        print(datetime.now(), "GUI测试网站界面", "点击保存测试网址")
         # 函数作用：用于保存测试网站的输入框的值
         # 使用一个数组来存放输入框的值，然后遍历窗口的每一个组件，判断该组件是否为输入框且输入框的值不为空
         内容 = []
@@ -384,6 +411,7 @@ def 测试网站界面():
 
 
 def 提交代码设置界面():
+    print(datetime.now(), "GUI提交代码设置界面")
     # 新建一个子窗口，并设定大小为400X600，并使第0列占比为1、第1列占比为2（1列更宽）
     子界面 = Toplevel()
     子界面.geometry("400x600")
@@ -391,6 +419,7 @@ def 提交代码设置界面():
     子界面.columnconfigure(1, weight=2)
 
     def 新增行数():
+        print(datetime.now(), "GUI提交代码设置界面", "点击新增行数")
         # 函数作用：用于新增填写提交代码的key和value的输入框数量。单次点击新增2个输入框
         # 调用DataLibrary的读取行数函数，并传入需要读取的窗口，返回已有行数
         已有行数 = DL.读取行数(子界面)
@@ -407,6 +436,7 @@ def 提交代码设置界面():
         代码value详情.grid(row=已有行数, column=1, columnspan=1, sticky="NSEW")
 
     def 保存提交代码():
+        print(datetime.now(), "GUI提交代码设置界面", "点击保存提交代码")
         # 函数作用：用于保存提交代码设置界面的所有输入框的值
         # 使用一个数组来存放输入框的值，然后遍历窗口的每一个组件，判断该组件是否为输入框且输入框的值不为空
         内容 = []
@@ -453,6 +483,7 @@ def 提交代码设置界面():
 
 
 def 学期假期界面():
+    print(datetime.now(), "GUI学期假期界面")
     # 新建一个子窗口，并设定大小为400X600，并使所有列占比为1（界面宽度平均分配）
     子界面 = Toplevel()
     子界面.geometry("400x600")
@@ -462,6 +493,7 @@ def 学期假期界面():
     子界面.columnconfigure(3, weight=1)
 
     def 新增行数():
+        print(datetime.now(), "GUI学期假期界面", "点击新增行数")
         已有组件 = DL.读取组件(子界面)
         已有行数 = DL.读取行数(子界面)
         if 已有行数 > 30:
@@ -509,6 +541,7 @@ def 学期假期界面():
         var_column = var_column + 1
 
     def 保存():
+        print(datetime.now(), "GUI学期假期界面", "点击保存")
         var_星期_list = []
         for new_var_星期 in var_星期:
             var_星期_list.append(new_var_星期.get())
@@ -558,12 +591,14 @@ def 学期假期界面():
 
 
 def 学期补课界面():
+    print(datetime.now(), "GUI学期补课界面")
     子界面 = Toplevel()
     子界面.geometry("400x600")
     子界面.columnconfigure(0, weight=1)
     子界面.columnconfigure(1, weight=2)
 
     def 新增行数():
+        print(datetime.now(), "GUI学期补课界面", "点击新增行数")
         已有组件 = DL.读取组件(子界面)
         已有行数 = DL.读取行数(子界面)
         # print(已有行数)
@@ -578,6 +613,7 @@ def 学期补课界面():
             补课详情.grid(row=已有行数, column=1, columnspan=1, sticky="NSEW")
 
     def 学期补课内容():
+        print(datetime.now(), "GUI学期补课界面", "点击保存")
         内容 = []
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
@@ -622,6 +658,7 @@ def 学期补课界面():
 
 
 def 校站设置界面():
+    print(datetime.now(), "GUI校站设置界面")
     子界面 = Toplevel()
     子界面.geometry("400x600")
     子界面.columnconfigure(0, weight=1)
@@ -633,6 +670,7 @@ def 校站设置界面():
     # 滚动条.config(command=子界面.yview)
     '''
     def 新增行数():
+        print(datetime.now(), "GUI校站设置界面", "点击新增行数")
         已有行数 = DL.读取行数(子界面)
         print(已有行数)
         if 已有行数 == 11:
@@ -648,6 +686,7 @@ def 校站设置界面():
             校站链接详情.grid(row=已有行数, column=1, columnspan=2, sticky="NSEW")
 
     def 保存校站网页():
+        print(datetime.now(), "GUI校站设置界面", "点击保存校站网页")
         内容 = []
         for i in 子界面.winfo_children():
             if isinstance(i, Entry) and i.get() != "":
@@ -679,12 +718,14 @@ def 校站设置界面():
 
 
 def 校站界面():
+    print(datetime.now(), "GUI校站界面")
     子界面 = Toplevel()
     子界面.geometry("400x300")
     子界面.columnconfigure(0, weight=1)
     子界面.columnconfigure(1, weight=1)
 
     def 打开网页(interesting):
+        print(datetime.now(), "GUI校站界面", "打开网页")
         webbrowser.open(interesting)
 
     校站数量 = len(设置文档['else']['schooltext'])
@@ -698,7 +739,7 @@ def 校站界面():
 
 
 def 拨号上网():
-
+    print(datetime.now(), "GUI拨号上网")
     UD.拨号上网值()
     global 拨号上网子界面
     拨号上网子界面 = Toplevel(主窗口)
@@ -722,6 +763,8 @@ def 拨号上网():
 
 
 class 拨号上网界面更新(threading.Thread):
+    print(datetime.now(), "GUI拨号上网界面更新CL")
+
     def __init__(self):
         super().__init__()
         self.StopTag = False
@@ -794,11 +837,13 @@ def 弹出窗口(提示):
 
 
 def 类拨号启动():
+    print(datetime.now(), "GUI类拨号启动")
     UD.初始化跨线程变量(1)
     # 终止文件 = open(跨线程变量文档路径, "w+")
     # 终止文件.write("0")
     # 终止文件.close()
     ga.start()
+    print(datetime.now(), "GUI类拨号启动", "ga.is_alive()", ga.is_alive())
 
 
 def get_resource_path(relative_path):
@@ -815,6 +860,7 @@ def get_resource_path(relative_path):
 跨线程变量文档路径 = os.path.join(主文件路径, 'test.txt')
 
 if __name__ == '__main__':
+    print(datetime.now(), "GUI", "进入主程序")
     # 进入程序，判断是否位于桌面或磁盘根目录
     用户路径 = os.environ['UserProfile']
     用户桌面路径 = os.path.join(用户路径, 'Desktop')
@@ -825,6 +871,7 @@ if __name__ == '__main__':
     主窗口.iconbitmap(get_resource_path('kuku\\kuku.ico'))
     # 主窗口.iconbitmap(os.path.join(主文件路径, "kuku.ico"))
     # 判断该文档是否放在了桌面或磁盘根目录，如果放在了桌面或磁盘根目录，就提示放在此处并强制关闭程序
+    print(datetime.now(), "GUI", "判断程序是否在桌面或磁盘根目录")
     if (主文件路径 == 用户桌面路径 or (not (正则判断.search(主文件路径) is None))):
         Style().configure('.', font=("微软雅黑", 16))
         提示文本 = Label(主窗口, text='请不要将此文件放在桌面或磁盘根目录')
@@ -834,15 +881,23 @@ if __name__ == '__main__':
         主窗口.mainloop()
         sys.exit()
     # 判断是否有用户文档跟设置文档
+    print(datetime.now(), "GUI", "初始化用户数据、设置数据和跨线程变量")
     UD.初始化用户数据(0)
     UD.初始化设置数据(0)
     UD.初始化跨线程变量(0)
+    print(datetime.now(), "GUI", "读取用户数据和设置数据")
     # 读取用户文档和设置文档
     用户文档 = UD.读取用户数据()
     设置文档 = UD.读取设置数据()
     # 判断设备码是否相同或是否被篡改用户文档，如设备码不同或被篡改，则重置用户文档跟设置文档的usermd5
     ID = DL.设备码()
+    print(datetime.now(), "GUI", "判断是否被篡改用户文档")
     if (用户文档['ID']['cpu'] != ID[0] or 用户文档['ID']['mac'] != ID[1] or DL.md5_text(str(用户文档)) != 设置文档['usermd5']):
+        print(datetime.now(), "GUI", "用户文档被篡改")
+        print(datetime.now(), "GUI", "CPU码", 用户文档['ID']['cpu'] == ID[0])
+        print(datetime.now(), "GUI", "mac码", 用户文档['ID']['mac'] == ID[1])
+        print(datetime.now(), "GUI", "md5码",
+              DL.md5_text(str(用户文档)) == 设置文档['usermd5'])
         # 初始化自启动、自动拨号和自动复拨，防止账户重置后使用空内容提交
         新设置文档 = 设置文档
         新设置文档['button']['turnon'] = 0
@@ -862,10 +917,14 @@ if __name__ == '__main__':
         设置文档 = UD.读取设置数据()
     # 判断软件是否需要自启动，如果需要就在启动文档添加一个bat批命令来打开软件
     # 如果不需要自启动就将启动文件夹的bat批命令删掉
+
+    print(datetime.now(), "GUI", "判断是否需要自启动")
     if 设置文档['button']['turnon'] == 1:
         UD.设置自启动(sys.argv[0])
+        print(datetime.now(), "GUI", "启动自启动")
     else:
         UD.关闭自启动()
+        print(datetime.now(), "GUI", "关闭自启动")
     # 判断是否勾选了自动复拨功能，如果勾选则启用自动复拨
 
     global ga, 自动复拨
@@ -873,12 +932,10 @@ if __name__ == '__main__':
     ga = DL.自动复拨()
     自动复拨 = threading.Thread(target=类拨号启动, daemon=True)
     # 自动复拨.start()
-    print("自动复拨.is_alive()", 自动复拨.is_alive())
     # 自动复拨 = DL.自动复拨()
     if 设置文档['button']['redial'] == 1:
         自动复拨.start()
-    print("自动复拨.is_alive()", 自动复拨.is_alive())
-    print("自动复拨", 自动复拨)
+        print(datetime.now(), "GUI", "启动自动复拨")
 
     # 设置主窗口大小
     主窗口.geometry("600x300")

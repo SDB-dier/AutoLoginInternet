@@ -5,27 +5,34 @@ import InterGUI as GUI
 import DataLibrary as DL
 import requests
 import json
+from datetime import datetime
 
 
 def 初始化用户数据(Reset):
+    print(datetime.now(), "UD", "进入初始化用户数据函数")
     # 函数作用：检查软件路径是否有用户文档或是否强制重置用户文档
     if ((os.path.exists(GUI.用户文档路径) is False) or Reset == 1):
+        print(datetime.now(), "UD", "确定初始化用户数据")
         f = open(GUI.用户文档路径, "w", encoding='utf-8')
         f.write(初始化用户数据文档())
         f.close()
 
 
 def 初始化设置数据(Reset):
+    print(datetime.now(), "UD", "进入初始化设置数据函数")
     # 函数作用：检查软件路径是否有设置文档或是否强制重置设置文档
     if ((os.path.exists(GUI.设置文档路径) is False) or Reset == 1):
+        print(datetime.now(), "UD", "确定初始化设置数据")
         f = open(GUI.设置文档路径, "w", encoding='utf-8')
         f.write(初始化设置数据文档())
         f.close()
 
 
 def 初始化跨线程变量(Reset):
+    print(datetime.now(), "UD", "进入初始化跨线程变量函数")
     # 函数作用：检查软件路径是否有设置文档或是否强制重置跨线程变量文档
     if ((os.path.exists(GUI.跨线程变量文档路径) is False) or Reset == 1):
+        print(datetime.now(), "UD", "确定初始化跨线程变量")
         f = open(GUI.跨线程变量文档路径, "w", encoding='utf-8')
         f.write(初始化跨线程变量文档())
         f.close()
@@ -111,6 +118,7 @@ def 关闭自启动():
 
 
 def 拨号上网值():
+    print(datetime.now(), "UD", "拨号上网值")
     # 函数作用：拨号上网
 
     # 获取get的传输值，并将json的用户密码修改为用户文档里的账户密码
@@ -184,12 +192,20 @@ def 初始化设置数据文档():
             ],
             "schooltext": [
                 "上网登录页",
-                "教务系统",
+                "教务系统（校内1）",
+                "教务系统（校内2）",
+                "教务系统（校内3）",
+                "教务系统（校内4）",
+                "教务系统（校内5）",
                 "教务系统（校外1）"
             ],
             "schoolweb": [
                 "http://172.30.100.2/",
                 "http://172.18.100.81/jwweb/default.aspx",
+                "http://172.18.100.82/jwweb/default.aspx",
+                "http://172.18.100.83/jwweb/default.aspx",
+                "http://172.18.100.84/jwweb/default.aspx",
+                "http://172.18.100.85/jwweb/default.aspx",
                 "http://218.15.245.162:9086/jwweb/home.aspx"
             ],
             "fontsize": "16"
