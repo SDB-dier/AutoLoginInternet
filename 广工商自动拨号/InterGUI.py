@@ -42,7 +42,6 @@ def 使用说明(框架):
     学期补课：设定补课，补课受复拨时间限制\
     "
     警告文本 = "!!警告!!\n\
-    测试版不要关闭命令行窗口，否则程序会被关闭\n\
     UserData和UserSetting包含个人隐私信息，请勿\n\
 泄露\n\
     DataSetting为假期设置信息，可设置好后发送他人"
@@ -281,11 +280,11 @@ def 关于软件(框架):
     软件介绍 = Label(框架, text=软件介绍text, style='this.TLabel')
     软件介绍.grid(row=0, column=0, columnspan=2, sticky=W)
 
-    版本号text = "版本号：1.01（测试版）"
+    版本号text = "版本号：1.02（测试版）"
     版本号 = Label(框架, text=版本号text, style='this.TLabel')
     版本号.grid(row=1, column=0, columnspan=1, sticky=SW)
 
-    封包时间text = "封包时间：2024/03/11"
+    封包时间text = "封包时间：2024/03/22"
     封包时间 = Label(框架, text=封包时间text, style='this.TLabel')
     封包时间.grid(row=1, column=1, columnspan=1, sticky=SE)
 
@@ -525,6 +524,10 @@ def 版本记录():
     新增版本记录、固定了主窗口大小"
     版本文字 = Label(容器, text=版本1_01)
     版本文字.pack(side="top", anchor="nw")
+    版本1_02 = "版本1.02    2024/03/22\n\
+    添加了软件路径含有空格时的提示"
+    版本文字 = Label(容器, text=版本1_02)
+    版本文字.pack(side="top", anchor="nw")
 
     # 拨号文字.grid(row=1, column=0, columnspan=1, sticky=NW)
     画布.update()
@@ -659,6 +662,14 @@ if __name__ == '__main__':
     if (主文件路径 == 用户桌面路径 or (not (正则判断.search(主文件路径) is None))):
         Style().configure('.', font=("微软雅黑", 16))
         提示文本 = Label(主窗口, text='请不要将此文件放在桌面或磁盘根目录')
+        提示文本.grid(row=0, column=0)
+        关闭按钮 = Button(主窗口, text='确认关闭', command=sys.exit)
+        关闭按钮.grid(row=1, column=0)
+        主窗口.mainloop()
+        sys.exit()
+    elif (" " in 主文件路径):
+        Style().configure('.', font=("微软雅黑", 16))
+        提示文本 = Label(主窗口, text='请不要将此文件放在含有空格的路径')
         提示文本.grid(row=0, column=0)
         关闭按钮 = Button(主窗口, text='确认关闭', command=sys.exit)
         关闭按钮.grid(row=1, column=0)
